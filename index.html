@@ -49,7 +49,7 @@
 	}
 	
 	#nojs {
-		display: block;
+		visibility: visible;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -61,7 +61,7 @@
 
 	#q {
 		position: relative;
-		display: none;
+		visibility: none;
 		top: 50%;
 		left: 50%;
 		font-size: 80px;
@@ -96,7 +96,7 @@
 	</div>
 	<script>
 	const $ = document.querySelector.bind(document);
-	$("#nojs").style.display = "none";
+	$("#nojs").style.visibility = "hidden";
 
 	let questions = {};
 	let mysheet = {};
@@ -117,7 +117,7 @@
 	
 	function newQuestion() {
 		if (!Object.keys(questions).length) return loadQuestions().then(newQuestion);
-		$("#q").style.display = "block";
+		$("#q").style.visibility = "visible";
 		let qwa = Object.keys(questions);
 		let q = qwa[Math.floor(Math.random() * qwa.length)];
 		answer = questions[q];
@@ -125,7 +125,7 @@
 		if (learning) $("input").placeholder = answer;
 		else {
 			$("input").placeholder = "Answer";
-			$("#h").style.display = "block";
+			$("#h").style.visibility = "visible";
 		}
 		$("input").value = "";
 		$("#wl").innerText = qwa.length;
@@ -157,7 +157,7 @@
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
-		$("#h").style.display = "none";
+		$("#h").style.visibility = "hidden";
 	}
 
 	function learn() {
@@ -165,7 +165,7 @@
 		$("#uhints").innerText = "∞";
 		$("input").placeholder = answer;
 		$("input").value = "";
-		$("#h").style.display = "none";
+		$("#h").style.visibility = "hidden";
 	}
 	
 	$("input").oninput = () => {
