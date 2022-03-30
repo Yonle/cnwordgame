@@ -1,8 +1,9 @@
 <!DOCTTYPE html>
 <html>
 	<head>
-		<title>Game</title>
+		<title>Chinese Word Game</title>
 		<meta name="viewport" content="width=device-width, user-scaleable=yes">
+		<meta name="description" content="A simple one chinese word guessing game.">
 		<meta name="theme-color" content="#ffcc80">
 	</head>
 	<style>
@@ -85,7 +86,8 @@
 		<h2><span id="wl">0</span> words left</h2>
 	</div>
 	<h2 id="links">
-		<a href="https://github.com/Yonle">Author</a> <a href="https://github.com/Yonle/cnwordgame">Repository</a> <a href="#" onclick="cheatsheet()">Cheatsheet</a> <a href="#" onclick="mysheet_()">My Sheet</a>
+		<a href="https://github.com/Yonle">Author</a> <a href="https://github.com/Yonle/cnwordgame">Repository</a> <a href="#" onclick="cheatsheet()">Cheatsheet</a> <a href="#" onclick="mysheet_()">My Sheet</a><br>
+		<a href="#" onclick="learn()">I don't know and i want to learn</a>
 	</h2>
 	<div id="nojs">This site require a javascript to work. Please enable it and try again.</div>
 	<div id="q">
@@ -100,6 +102,7 @@
 	let mysheet = {};
 	let answer = "";
 	let useHint = false;
+	let learning = false;
 
 	function loadQuestions(a = "q") {
 		return new Promise(async (res) => {
@@ -119,7 +122,8 @@
 		let q = qwa[Math.floor(Math.random() * qwa.length)];
 		answer = questions[q];
 		$("h1").innerText = q;
-		$("input").placeholder = "Answer";
+		if (learning) $("input").placeholder = answer;
+		else $("input").placeholder = "Answer";
 		$("input").value = "";
 		$("#wl").innerText = qwa.length;
 		useHint = false;
@@ -150,6 +154,12 @@
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
+	}
+
+	function learn() {
+		learning = true;
+		$("input").placeholder = answer;
+		$("input").value = "";
 	}
 	
 	$("input").oninput = () => {
