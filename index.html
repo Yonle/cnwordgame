@@ -1,0 +1,170 @@
+<!DOCTTYPE html>
+<html>
+	<head>
+		<title>Game</title>
+		<meta name="viewport" content="width=device-width, user-scaleable=yes">
+		<meta name="theme-color" content="#ffcc80">
+	</head>
+	<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	h1, h2, h3, h4 {
+		margin: 0;
+	}
+
+	a {
+		color: black;
+	}
+
+	p {
+		margin-top: 8px;
+	}
+
+	input {
+		outline: none;
+		padding: 10px;
+		border: none;
+		border-bottom: 2px solid grey;
+		background: transparent;
+		text-align: center;
+		font-size: 40px;
+		width: 50%;
+		max-width: 100%;
+	}
+
+	button {
+		font-size: 30px;
+		border: 1px solid grey;
+		border-radius: 5px;
+		background: transparent;
+	}
+	
+	body {
+		font-family: monospace;
+		background: #ffcc80;
+		color: black;
+	}
+	
+	#nojs {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: transparent;
+		width: 100%;
+		height: 100vh;
+		z-index: 2;
+	}
+
+	#q {
+		position: relative;
+		display: none;
+		top: 50%;
+		left: 50%;
+		font-size: 80px;
+	}
+
+	#infos {
+		position: fixed;
+		bottom: 10px;
+		left: 10px;
+	}
+	
+	#links {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+	}
+	</style>
+	<body>
+	<div id="infos">
+		<h2>Remembered Words: <span id="fin">0</span></h2>
+		<h2>Used Hints: <span id="uhints">0</span></h2>
+		<h2><span id="wl">0</span> words left</h2>
+	</div>
+	<h2 id="links">
+		<a href="https://github.com/Yonle">Author</a> <a href="https://github.com/Yonle/cnwordgame">Repository</a> <a href="#" onclick="cheatsheet()">Cheatsheet</a> <a href="#" onclick="mysheet_()">My Sheet</a>
+	</h2>
+	<div id="nojs">This site require a javascript to work. Please enable it and try again.</div>
+	<div id="q">
+		<h1>Wait</h1>
+		<input type="text" placeholder="Answer"></input><button onclick="hint()">Hint</button>
+	</div>
+	<script>
+	const $ = document.querySelector.bind(document);
+	$("#nojs").style.display = "none";
+
+	let questions = {};
+	let mysheet = {};
+	let answer = "";
+	let useHint = false;
+
+	function loadQuestions(a = "q") {
+		return new Promise(async (res) => {
+			let texts = await fetch(a).then(res => res.text());
+			texts.split("\n").filter(i => i.length && !i.startsWith("#")).map(i => i.split(" ")).filter(i => i.length).forEach(i => {
+				questions[i[0]] = i[1];
+				mysheet[i[0]] = "";
+			});
+			res();
+		});
+	}
+	
+	function newQuestion() {
+		if (!Object.keys(questions).length) return loadQuestions().then(newQuestion);
+		$("#q").style.display = "block";
+		let qwa = Object.keys(questions);
+		let q = qwa[Math.floor(Math.random() * qwa.length)];
+		answer = questions[q];
+		$("h1").innerText = q;
+		$("input").placeholder = "Answer";
+		$("input").value = "";
+		$("#wl").innerText = qwa.length;
+		useHint = false;
+	}
+
+	async function cheatsheet(a = "q") {
+		let texts = await fetch(a).then(res => res.text());
+		let t = [];
+		texts.split("\n").filter(i => i.length && !i.startsWith("#")).map(i => i.split(" ")).filter(i => i.length).forEach(i => {
+			t.push(i[0] + ": " + i[1]);
+		});
+
+		alert(t.join("\n"));
+	}
+
+	function mysheet_() {
+		let t = [];
+		for (i in mysheet) {
+			t.push(i + ": " + mysheet[i]);
+		}
+
+		alert(t.join("\n"));
+	}
+
+	function hint() {
+		useHint = true;
+		if ($("input").placeholder === answer) return;
+		$("input").placeholder = answer;
+		$("input").value = "";
+		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
+	}
+	
+	$("input").oninput = () => {
+		$("input").value = $("input").value.toLowerCase().slice(0, answer.length);
+		if ($("input").value == answer) {
+			if (!useHint) {
+				$("#fin").innerText = Number($("#fin").innerText) + 1;
+			}
+			mysheet[$("h1").innerText] = $("input").value;
+			delete questions[$("h1").innerText];
+			newQuestion();
+		}
+	}
+
+	loadQuestions().then(newQuestion);
+	</script>
+	</body>
+</html>
