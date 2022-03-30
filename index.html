@@ -53,7 +53,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		background: transparent;
+		background: #ffcc80;
 		width: 100%;
 		height: 100vh;
 		z-index: 2;
@@ -78,6 +78,21 @@
 		top: 10px;
 		left: 10px;
 	}
+
+	#s {
+		position: fixed;
+		padding: 10px;
+		border: 1px solid black;
+		z-index: 2;
+		width: 100%;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		font-size: 20px;
+		background: #ffcc80;
+		overflow-y: auto;
+		visibility: hidden;
+	}
 	</style>
 	<body>
 	<div id="infos">
@@ -89,6 +104,7 @@
 		<a href="https://github.com/Yonle">Author</a> <a href="https://github.com/Yonle/cnwordgame">Repository</a> <a href="#" onclick="cheatsheet()">Cheatsheet</a> <a href="#" onclick="mysheet_()">My Sheet</a><br>
 		<a href="#" onclick="learn()">I want to learn Chinese</a>
 	</h2>
+	<div id="s"><h2 id="st"></h2><br><a style="position: static; bottom: 10px;" href="#" onclick="hide_sheet()">Okay</a></div>
 	<div id="nojs">This site require a javascript to work. Please enable it and try again.</div>
 	<div id="q">
 		<h1>Wait</h1>
@@ -137,7 +153,8 @@
 			t.push(i + ": " + questions[i]);
 		}
 
-		alert(t.join("\n"));
+		$("#st").innerText = "Cheatsheet:\n" + t.join("\n");
+		$("#s").style.visibility = "visible";
 	}
 
 	function mysheet_() {
@@ -146,7 +163,12 @@
 			t.push(i + ": " + mysheet[i]);
 		}
 
-		alert(t.join("\n"));
+		$("#st").innerText = "Your sheet:\n" + t.join("\n");
+		$("#s").style.visibility = "visible";
+	}
+
+	function hide_sheet() {
+		$("#s").style.visibility = "hidden";
 	}
 
 	function hint() {
