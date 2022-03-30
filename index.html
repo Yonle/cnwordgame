@@ -83,7 +83,7 @@
 	<div id="infos">
 		<h2>Remembered Words: <span id="fin">0</span></h2>
 		<h2>Used Hints: <span id="uhints">0</span></h2>
-		<h2><span id="wl">0</span> words left</h2>
+		<!--- <h2><span id="wl">0</span> words left</h2> --->
 	</div>
 	<h2 id="links">
 		<a href="https://github.com/Yonle">Author</a> <a href="https://github.com/Yonle/cnwordgame">Repository</a> <a href="#" onclick="cheatsheet()">Cheatsheet</a> <a href="#" onclick="mysheet_()">My Sheet</a><br>
@@ -169,7 +169,7 @@
 				$("#fin").innerText = Number($("#fin").innerText) + 1;
 			}
 			mysheet[$("h1").innerText] = $("input").value;
-			delete questions[$("h1").innerText];
+			//delete questions[$("h1").innerText];
 			newQuestion();
 		}
 	}
