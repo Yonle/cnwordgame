@@ -125,7 +125,7 @@
 		if (learning) $("input").placeholder = answer;
 		else {
 			$("input").placeholder = "Answer";
-			$("h").style.display = "block";
+			$("#h").style.display = "block";
 		}
 		$("input").value = "";
 		$("#wl").innerText = qwa.length;
@@ -157,7 +157,7 @@
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
-		$("h").style.display = "none";
+		$("#h").style.display = "none";
 	}
 
 	function learn() {
@@ -165,7 +165,7 @@
 		$("#uhints").innerText = "∞";
 		$("input").placeholder = answer;
 		$("input").value = "";
-		$("h").style.display = "none";
+		$("#h").style.display = "none";
 	}
 	
 	$("input").oninput = () => {
