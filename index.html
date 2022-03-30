@@ -128,7 +128,6 @@
 			$("#h").style.visibility = "visible";
 		}
 		$("input").value = "";
-		$("#wl").innerText = qwa.length;
 		useHint = false;
 	}
 
@@ -151,9 +150,8 @@
 	}
 
 	function hint() {
-		if (learning) return;
+		if (useHint || learning) return;
 		useHint = true;
-		if ($("input").placeholder === answer) return;
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
