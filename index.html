@@ -130,9 +130,8 @@
 	}
 
 	async function cheatsheet(a = "q") {
-		let texts = await fetch(a).then(res => res.text());
 		let t = [];
-		texts.split("\n").filter(i => i.length && !i.startsWith("#")).map(i => i.split(" ")).filter(i => i.length).forEach(i => {
+		questions.forEach(i => {
 			t.push(i[0] + ": " + i[1]);
 		});
 
