@@ -81,7 +81,7 @@
 	</style>
 	<body>
 	<div id="infos">
-		<h2>Remembered Words: <span id="fin">0</span></h2>
+		<h2>Guessed Words: <span id="fin">0</span></h2>
 		<h2>Used Hints: <span id="uhints">0</span></h2>
 		<!--- <h2><span id="wl">0</span> words left</h2> --->
 	</div>
@@ -92,7 +92,7 @@
 	<div id="nojs">This site require a javascript to work. Please enable it and try again.</div>
 	<div id="q">
 		<h1>Wait</h1>
-		<input type="text" placeholder="Answer"></input><button onclick="hint()">Hint</button>
+		<input type="text" placeholder="Answer"></input><button id="h" onclick="hint()">Hint</button>
 	</div>
 	<script>
 	const $ = document.querySelector.bind(document);
@@ -123,7 +123,10 @@
 		answer = questions[q];
 		$("h1").innerText = q;
 		if (learning) $("input").placeholder = answer;
-		else $("input").placeholder = "Answer";
+		else {
+			$("input").placeholder = "Answer";
+			$("h").style.display = "block";
+		}
 		$("input").value = "";
 		$("#wl").innerText = qwa.length;
 		useHint = false;
@@ -148,17 +151,21 @@
 	}
 
 	function hint() {
+		if (learning) return;
 		useHint = true;
 		if ($("input").placeholder === answer) return;
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
+		$("h").style.display = "none";
 	}
 
 	function learn() {
 		learning = true;
+		$("#uhints").innerText = "∞";
 		$("input").placeholder = answer;
 		$("input").value = "";
+		$("h").style.display = "none";
 	}
 	
 	$("input").oninput = () => {
