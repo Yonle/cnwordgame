@@ -131,9 +131,9 @@
 
 	async function cheatsheet(a = "q") {
 		let t = [];
-		questions.forEach(i => {
-			t.push(i[0] + ": " + i[1]);
-		});
+		for (i in questions) {
+			t.push(i + ": " + questions[i]);
+		}
 
 		alert(t.join("\n"));
 	}
