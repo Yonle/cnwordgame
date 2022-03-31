@@ -191,10 +191,10 @@
 	$("input").oninput = () => {
 		$("input").value = $("input").value.toLowerCase().slice(0, answer.length);
 		if ($("input").value == answer) {
-			if (!useHint) {
+			if (!useHint || !mysheet[$("h1").innerText]) {
 				$("#fin").innerText = Number($("#fin").innerText) + 1;
+				mysheet[$("h1").innerText] = $("input").value;
 			}
-			mysheet[$("h1").innerText] = $("input").value;
 			//delete questions[$("h1").innerText];
 			newQuestion();
 		}
