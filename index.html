@@ -191,7 +191,7 @@
 	$("input").oninput = () => {
 		$("input").value = $("input").value.toLowerCase().slice(0, answer.length);
 		if ($("input").value == answer) {
-			if (!useHint || !mysheet[$("h1").innerText]) {
+			if (!useHint) {
 				$("#fin").innerText = Number($("#fin").innerText) + 1;
 				mysheet[$("h1").innerText] = $("input").value;
 			}
