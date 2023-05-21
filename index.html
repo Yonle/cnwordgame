@@ -92,9 +92,14 @@
 		overflow-y: auto;
 		visibility: hidden;
 	}
+
+	#combo {
+		visibility: hidden;
+	}
 	</style>
 	<body>
 	<div id="infos">
+		<h2 id="combo">Combo: <span id="combonum">0</span></h2>
 		<h2>Guessed Words: <span id="fin">0</span></h2>
 		<h2>Used Hints: <span id="uhints">0</span></h2>
 		<!--- <h2><span id="wl">0</span> words left</h2> --->
@@ -118,6 +123,7 @@
 	let answer = "";
 	let useHint = false;
 	let learning = false;
+	let comboTimeout = null;
 
 	function loadQuestions(a = "q") {
 		return new Promise(async (res) => {
@@ -173,6 +179,7 @@
 	function hint() {
 		if (useHint || learning) return;
 		useHint = true;
+
 		$("input").placeholder = answer;
 		$("input").value = "";
 		$("#uhints").innerText = Number($("#uhints").innerText) + 1;
@@ -187,7 +194,21 @@
 		$("#h").style.visibility = "hidden";
 		$("#infos").style.visibility = "hidden";
 	}
-	
+
+	function comboTimeoutFunc() {
+		$("#combo").style.visibility = "hidden";
+		$("#combonum").innerText = "0";
+	}
+
+	function combo() {
+		if (useHint || learning) return;
+		clearTimeout(comboTimeout);
+		comboTimeout = setTimeout(comboTimeoutFunc, 3000);
+		$("#combonum").innerText++;
+
+		$("#combo").style.visibility = "visible";
+	}
+
 	$("input").oninput = () => {
 		$("input").value = $("input").value.toLowerCase().slice(0, answer.length);
 		if ($("input").value == answer) {
@@ -196,6 +217,8 @@
 				mysheet[$("h1").innerText] = $("input").value;
 			}
 			//delete questions[$("h1").innerText];
+
+			combo();
 			newQuestion();
 		}
 	}
